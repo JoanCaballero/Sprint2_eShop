@@ -1,5 +1,7 @@
 // Exercise 6
-const validate = () => {
+const validate = (e) => {
+	e.preventDefault();
+	
 	let error = 0;
 	// Get the input fields
 	const fName = document.getElementById("fName");
@@ -53,9 +55,9 @@ const validate = () => {
 		showError(fAddress, errorAddress, "Address must be at least 3 characters.");
 	}
 
-	if (!/^\d{3,}$/.test(fPhone.value.trim())) {
+	if (!/^\d{9}$/.test(fPhone.value.trim())) {
 		error++;
-		showError(fPhone, errorPhone, "Phone number must contain only digits and must be at least 3 characters.");
+		showError(fPhone, errorPhone, "Phone number must contain only digits and must be 9 characters long.");
 	}
 
 	const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d).+$/;
@@ -68,6 +70,13 @@ const validate = () => {
 		alert("Please fill in all required fields.");
 	}else{
 		alert("Form submitted successfully");
+		fName.value = "";
+		fEmail.value = "";
+		fAddress.value = "";
+		fLastN.value = "";
+		fPassword.value = "";
+		fPhone.value = "";
+		cleanCart();
 	}
 }
 const showError = (input, errorElement, errorMessage) => {
@@ -81,3 +90,5 @@ const resetErrors = (input, errorElement) => {
 	errorElement.style.display = "none";
 	errorElement.textContent = "";
 }
+
+document.getElementById('myForm').addEventListener('submit', validate);

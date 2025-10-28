@@ -64,20 +64,18 @@ const products = [
     }
 ]
 
-// => Reminder, it's extremely important that you debug your code. 
-// ** It will save you a lot of time and frustration!
-// ** You'll understand the code better than with console.log(), and you'll also find errors faster. 
-// ** Don't hesitate to seek help from your peers or your mentor if you still struggle with debugging.
-
-// Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
 const cartList = products.map(product => ({
   ...product,             
   quantity: 0             
 }));
 
-const cart = [];
+let cart = [];
 
 const total = 0;
+
+const saveCart = () => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
 
 // Exercise 1
 const buy = (id) => {
@@ -88,15 +86,14 @@ const buy = (id) => {
     if (productInCart) {
         productInCart.quantity++;
     } else {
-        product.quantity++;
+        product.quantity = 1;
         cart.push(product); 
     }
 
     applyPromotionsCart();
     printCart();
     updateCartCount();
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cart array
+    saveCart();
 }
 
 // Exercise 2
@@ -107,6 +104,7 @@ const cleanCart = () =>  {
     cart.splice(0, cart.length);
     updateCartCount();
     printCart();
+    saveCart();
 }
 
 // Exercise 3
@@ -120,12 +118,11 @@ const calculateTotal = () =>  {
         }
     }
     return total;
-    // Calculate total price of the cart using the "cartList" array
 }
 
 // Exercise 4
 const applyPromotionsCart = () =>  {
-    for (let product of cartList) {
+    for (let product of cart) {
         const subtotal = product.price * product.quantity;
         if (product.offer && product.quantity >= product.offer.number) {
             product.subtotalWithDiscount = subtotal * (1 - product.offer.percent / 100);
@@ -133,19 +130,19 @@ const applyPromotionsCart = () =>  {
             delete product.subtotalWithDiscount;
         }
     }
-    // Apply promotions to each item in the array "cart"
 }
 
 // Exercise 5
 const printCart = () => {
     const cartTableBody = document.getElementById("cart_list");
     const totalPriceElement = document.getElementById("total_price");
+    if (!cartTableBody || !totalPriceElement) return;
     cartTableBody.innerHTML = "";
 
     if (cart.length === 0) {
         cartTableBody.innerHTML = `
             <tr>
-                <td colspan="4" class="text-center text-muted">Your cart is empty 🛒</td>
+                <td colspan="5" class="text-center text-muted">Your cart is empty 🛒</td>
             </tr>`;
         totalPriceElement.textContent = "0";
         return;
@@ -160,13 +157,18 @@ const printCart = () => {
             <tr>
                 <th scope="row">${product.name}</th>
                 <td>$${product.price.toFixed(2)}</td>
-                <td>${product.quantity}</td>
+                <td>
+                    <div class = "d-flex justify-content-center align-items-center">
+                        <button class="btn btn-primary" onclick="removeFromCart(${product.id})">-</button>
+                        ${product.quantity}
+                        <button class="btn btn-primary" onclick="buy(${product.id})">+</button>
+                    </div>
+                </td>
                 <td>$${subtotalWithDiscount.toFixed(2)}</td>
             </tr>
         `;
     } 
     totalPriceElement.textContent = total.toFixed(2);
-    // Fill the shopping cart modal manipulating the shopping cart dom
 }
 
 const updateCartCount = () => {
@@ -176,7 +178,18 @@ const updateCartCount = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    // Botons Add to Cart
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+        try{
+            cart = JSON.parse(savedCart);
+            applyPromotionsCart();
+            updateCartCount();
+            printCart();
+        }catch(e){
+            console.error("Error parsing cart:", e);
+            cart = [];
+        }    
+    }
     const addButtons = document.querySelectorAll(".add-to-cart");
     addButtons.forEach(btn => {
         btn.addEventListener("click", () => {
@@ -184,7 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
             buy(id);
         });
     });
-    // Botó Clean Cart
     const cleanBtn = document.getElementById("clean-cart");
     if (cleanBtn) {
         cleanBtn.addEventListener("click", () => cleanCart());
@@ -210,6 +222,7 @@ const removeFromCart = (id) => {
     applyPromotionsCart();
     updateCartCount();
     printCart();
+    saveCart();
 }
 
 const open_modal = () =>  {
@@ -217,3 +230,13 @@ const open_modal = () =>  {
     printCart();
     updateCartCount();
 }
+
+// Persist cart in localStorage
+window.addEventListener("beforeunload", () => {
+    saveCart();
+});
+
+window.open_modal = open_modal;
+window.buy = buy;
+window.removeFromCart = removeFromCart;
+window.cleanCart = cleanCart;
