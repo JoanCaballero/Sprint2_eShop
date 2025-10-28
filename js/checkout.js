@@ -66,10 +66,7 @@ const validate = (e) => {
         showError(fPassword, errorPassword, "Password must include both letters and numbers.");
     }
 	 
-	if(error>0){
-		alert("Please fill in all required fields.");
-	}else{
-		alert("Form submitted successfully");
+	if (error <=0){
 		fName.value = "";
 		fEmail.value = "";
 		fAddress.value = "";
@@ -77,6 +74,12 @@ const validate = (e) => {
 		fPassword.value = "";
 		fPhone.value = "";
 		cleanCart();
+		if (typeof bootstrap !== 'undefined') {
+             const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+             successModal.show();
+        } else {
+            alert("Order submitted successfully! Thank you for your purchase.");
+        }
 	}
 }
 const showError = (input, errorElement, errorMessage) => {
