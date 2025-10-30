@@ -8,13 +8,15 @@
   --primary-dark: #1e40af;
   --primary-light: #3b82f6;
   --secondary-color: #64748b;
+  --hero-left: #667eea;
+  --hero-center: #6e65c6;
+  --hero-right: #764ba2;
   --accent-color: #f59e0b;
   --success-color: #10b981;
   --danger-color: #ef4444;
   --background-light: #f8fafc;
   --background-white: #ffffff;
   --text-dark: #1e293b;
-  --text-light: #64748b;
   --border-color: #e2e8f0;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
@@ -85,8 +87,19 @@ body {
 
 .nav-link:hover {
   background-color: var(--background-light);
-  color: var(--primary-color) !important;
   transform: translateY(-2px);
+}
+
+.nav-link[href="#grocery"]:hover {
+  color: var(--hero-left) !important;
+}
+
+.nav-link[href="#beauty"]:hover {
+  color: var(--hero-center) !important;
+}
+
+.nav-link[href="#clothes"]:hover {
+  color: var(--hero-right) !important;
 }
 
 .nav-link i {
@@ -95,7 +108,7 @@ body {
 
 /* === CART BUTTON === */
 .cart-button {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+  background: linear-gradient(135deg, var(--hero-left), var(--hero-right)) !important;
   border: none !important;
   color: white !important;
   padding: 0.625rem 1.25rem !important;
@@ -108,14 +121,22 @@ body {
   gap: 0.5rem;
 }
 
+.cart-button #count_product{
+  color: var(--hero-right) !important;
+}
+
 .cart-button:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
   background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
 }
 
+.cart-button:hover #count_product{
+  color: var(--primary-dark) !important;
+}
+
 .cart-button .badge {
-  background-color: var(--accent-color) !important;
+  background-color: var(--background-light) !important;
   font-weight: 700;
   padding: 0.35em 0.65em;
   animation: pulse 2s infinite;
@@ -128,7 +149,7 @@ body {
 
 /* === HERO SECTION === */
 .hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--hero-left) 0%, var(--hero-right) 100%);
   padding: 4rem 0 !important;
   position: relative;
   overflow: hidden;
@@ -172,34 +193,53 @@ body {
 }
 
 .product-section h2 {
-  font-size: 2rem;
-  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  font-size: 2.2rem;
+  font-weight: 800;
   color: var(--text-dark);
-  margin-bottom: 2rem;
+  margin: 0 auto 2.5rem auto;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   position: relative;
-  display: inline-block;
-  padding-bottom: 0.75rem;
+  width: fit-content;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .product-section h2::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20vw;
   height: 4px;
-  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  background: currentColor;
   border-radius: 2px;
 }
 
+#grocery h2 {
+  color: var(--hero-left);
+}
+
+#beauty h2 {
+  color: var(--hero-center);
+}
+
+#clothes h2 {
+  color: var(--hero-right);
+}
+
 .product-section h2 i {
-  color: var(--primary-color);
-  margin-right: 0.5rem;
+  color: inherit;
+  font-size: 1.8rem;
 }
 
 /* === PRODUCT CARDS === */
 .product-card {
-  border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   transition: var(--transition);
   overflow: hidden;
@@ -209,10 +249,36 @@ body {
   flex-direction: column;
 }
 
+#grocery .product-card {
+  border: 1px solid var(--hero-left);
+  box-shadow: 0 2px 6px rgba(90, 86, 179, 0.08);
+}
+
+#beauty .product-card {
+  border: 1px solid var(--hero-center);
+  box-shadow: 0 2px 6px rgba(124, 109, 176, 0.08);
+}
+
+#clothes .product-card {
+  border: 1px solid var(--hero-right);
+  box-shadow: 0 2px 6px rgba(79, 107, 150, 0.08);
+}
+
 .product-card:hover {
   transform: translateY(-8px);
-  box-shadow: var(--shadow-xl);
   border-color: var(--primary-light);
+}
+
+#grocery .product-card:hover {
+  box-shadow: 0 4px 12px rgba(90, 86, 179, 0.15);
+}
+
+#beauty .product-card:hover {
+  box-shadow: 0 4px 12px rgba(124, 109, 176, 0.15);
+}
+
+#clothes .product-card:hover {
+  box-shadow: 0 4px 12px rgba(79, 107, 150, 0.15);
 }
 
 .product-card .card-img-top {
@@ -237,15 +303,31 @@ body {
 .product-card h3 {
   font-size: 1.125rem;
   font-weight: 600;
-  color: var(--text-dark);
   margin-bottom: 0.75rem;
   line-height: 1.4;
+}
+
+#grocery .product-card h3,
+#grocery .product-card .price,
+#grocery .product-card .btn {
+  color: var(--hero-left);
+}
+
+#beauty .product-card h3,
+#beauty .product-card .price,
+#beauty .product-card .btn {
+  color: var(--hero-center);
+}
+
+#clothes .product-card h3,
+#clothes .product-card .price,
+#clothes .product-card .btn {
+  color: var(--hero-right);
 }
 
 .product-card .price {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
   margin: 0;
 }
 
@@ -257,8 +339,6 @@ body {
 
 .product-card .btn {
   width: 100%;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
   background-color: transparent;
   font-weight: 600;
   padding: 0.625rem 1.25rem;
@@ -266,11 +346,36 @@ body {
   transition: var(--transition);
 }
 
+#grocery .product-card .btn{
+  border: 2px solid var(--hero-left);
+}
+
+#beauty .product-card .btn{
+  border: 2px solid var(--hero-center);
+}
+
+#clothes .product-card .btn{
+  border: 2px solid var(--hero-right);
+}
+
 .product-card .btn:hover {
-  background-color: var(--primary-color);
-  color: white;
   transform: scale(1.02);
   box-shadow: var(--shadow-md);
+}
+
+#grocery .product-card .btn:hover{
+  background-color: var(--hero-left);
+  color: white;
+}
+
+#beauty .product-card .btn:hover{
+  background-color: var(--hero-center);
+  color: white;
+}
+
+#clothes .product-card .btn:hover{
+  background-color: var(--hero-right);
+  color: white;
 }
 
 /* === CHECKOUT PAGE === */
@@ -384,7 +489,7 @@ body {
   border: none !important;
   color: white !important;
   font-weight: 600;
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 2rem;
   border-radius: 8px;
   transition: var(--transition);
 }
@@ -401,8 +506,24 @@ body {
   box-shadow: var(--shadow-xl);
 }
 
+.modal-content .btn-primary{
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
+}
+
+.modal-content .btn-secondary{
+  background: linear-gradient(135deg, var(--secondary-color), var(--secondary-color)) !important;
+}
+
+.modal-content .btn-primary:hover{
+  background: linear-gradient(135deg, var(--hero-left), var(--hero-center)) !important;
+}
+
+.modal-content .btn-secondary:hover{
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
 .modal-header {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+  background: linear-gradient(180deg, var(--hero-left), var(--hero-center));
   color: white;
   border-radius: var(--border-radius) var(--border-radius) 0 0;
   padding: 1.5rem;
@@ -457,7 +578,6 @@ body {
 
 .table tbody tr:hover {
   background-color: var(--background-light);
-  transform: scale(1.01);
 }
 
 .table tbody td {
@@ -499,8 +619,14 @@ body {
 }
 
 .text-muted {
-  color: var(--text-light) !important;
+  color: var(--secondary-color) !important;
   font-style: italic;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  vertical-align: middle !important;
 }
 
 /* === SUCCESS MODAL === */
@@ -643,72 +769,5 @@ footer p {
 
   .product-card {
     page-break-inside: avoid;
-  }
-}
-
-/* === FIX FOR CART MODAL SCROLL ISSUES === */
-.modal-body {
-  overflow-x: hidden !important;
-}
-
-.cart-modal-table {
-  width: 100%;
-  overflow-x: hidden;
-}
-
-.cart-modal-table .table {
-  margin-bottom: 0;
-}
-
-.cart-modal-table .table tbody tr {
-  transform: none !important;
-}
-
-.cart-modal-table .table tbody tr:hover {
-  transform: none !important;
-  background-color: var(--background-light);
-}
-
-/* Remove problematic transforms from table rows */
-.table tbody tr {
-  transform: none !important;
-}
-
-.table tbody tr:hover {
-  transform: none !important;
-  background-color: var(--background-light);
-}
-
-/* Specific fixes for cart items */
-.cart-item {
-  transition: background-color 0.3s ease;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.cart-item:hover {
-  background-color: var(--background-light);
-  transform: none !important;
-}
-
-/* Ensure modal content stays within bounds */
-.modal-content {
-  max-width: 100vw;
-}
-
-.modal-dialog {
-  max-width: 95vw;
-  margin: 1rem auto;
-}
-
-/* Responsive fixes */
-@media (max-width: 768px) {
-  .modal-dialog {
-    max-width: 98vw;
-    margin: 0.5rem auto;
-  }
-  
-  .table-responsive {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
   }
 }
