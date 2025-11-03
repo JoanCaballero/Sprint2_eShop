@@ -20,13 +20,13 @@
 	<link rel="stylesheet" href="css/styles.css">
 </head>
 
-<body>
+<body class="pt-5">
 	<!-- Skip Navigation -->
 	<a href="#main-content" class="skip-link visually-hidden-focusable">Skip to main content</a>
 
 	<!-- Navigation-->
 	<header class="primary-header">
-		<nav class="navbar py-3 py-lg-0 navbar-light bg-light navbar-expand-lg" id="main-nav">
+		<nav class="navbar py-3 py-lg-0 navbar-light bg-light navbar-expand-lg fixed-top" id="main-nav">
 			<div class="container">
 				<a class="navbar-brand" href="#!" aria-label="ShopNow Home">ShopNow</a>
 
@@ -308,13 +308,10 @@
 	</footer>
 
 	<div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
+		<div class="modal-dialog modal-lg">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="cartModalLabel">
-						<i class="fas fa-cart-arrow-down" aria-hidden="true"></i>
-						My Cart
-					</h5>
+					<h5 class="modal-title" id="cartModalLabel"><i class="fas fa-cart-arrow-down" aria-hidden="true"></i>My Cart</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
@@ -329,30 +326,11 @@
 									<th scope="col">Total <small>(with discount)</small></th>
 								</tr>
 							</thead>
-							<tbody id="cart_list">
-								<tr>
-									<th scope="row">Cooking oil</th>
-									<td>$10.5</td>
-									<td>2</td>
-									<td>$21</td>
-								</tr>
-								<tr>
-									<th scope="row">Pasta</th>
-									<td>$6.25</td>
-									<td>1</td>
-									<td>$6.25</td>
-								</tr>
-								<tr>
-									<th scope="row">Lawn dress</th>
-									<td>$15</td>
-									<td>3</td>
-									<td>$45</td>
-								</tr>
-							</tbody>
+							<tbody id="cart_list"></tbody>
 						</table>
 					</div>
 					<div class="text-center fs-3">
-						Total: $<span id="total_price">100</span>
+						Total: $<span id="total_price">0</span>
 					</div>
 					<div class="text-center">
 						<a href="checkout.html" class="btn btn-primary m-3">Checkout</a>

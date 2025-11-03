@@ -2,7 +2,7 @@
 const products = [
     {
         id: 1,
-        name: 'cooking oil',
+        name: 'Cooking oil',
         price: 10.5,
         type: 'grocery',
         offer: {
@@ -64,50 +64,196 @@ const products = [
     }
 ]
 
-// => Reminder, it's extremely important that you debug your code. 
-// ** It will save you a lot of time and frustration!
-// ** You'll understand the code better than with console.log(), and you'll also find errors faster. 
-// ** Don't hesitate to seek help from your peers or your mentor if you still struggle with debugging.
+const cartList = products.map(product => ({
+  ...product,             
+  quantity: 0             
+}));
 
-// Improved version of cartList. Cart is an array of products (objects), but each one has a quantity field to define its quantity, so these products are not repeated.
-const cart = [];
+let cart = [];
 
 const total = 0;
 
+const saveCart = () => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+}
+
 // Exercise 1
 const buy = (id) => {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cart array
+    const product = cartList.find(p => p.id === id);
+    if (!product) return;
+
+    const productInCart = cart.find(p => p.id === id);
+    if (productInCart) {
+        productInCart.quantity++;
+    } else {
+        product.quantity = 1;
+        cart.push(product); 
+    }
+
+    applyPromotionsCart();
+    printCart();
+    updateCartCount();
+    saveCart();
 }
 
 // Exercise 2
 const cleanCart = () =>  {
-
+    for(let product of cart){
+        product.quantity = 0;
+    }
+    cart.splice(0, cart.length);
+    updateCartCount();
+    printCart();
+    saveCart();
 }
 
 // Exercise 3
 const calculateTotal = () =>  {
-    // Calculate total price of the cart using the "cartList" array
+    let total = 0;
+    for(let product of cartList){
+        if (product.subtotalWithDiscount) {
+            total += product.subtotalWithDiscount;
+        }else{
+            total += product.price * product.quantity;
+        }
+    }
+    return total;
 }
 
 // Exercise 4
 const applyPromotionsCart = () =>  {
-    // Apply promotions to each item in the array "cart"
+    for (let product of cart) {
+        const subtotal = product.price * product.quantity;
+        if (product.offer && product.quantity >= product.offer.number) {
+            product.subtotalWithDiscount = subtotal * (1 - product.offer.percent / 100);
+        } else {
+            delete product.subtotalWithDiscount;
+        }
+    }
 }
 
 // Exercise 5
 const printCart = () => {
-    // Fill the shopping cart modal manipulating the shopping cart dom
+    const cartTableBody = document.getElementById("cart_list");
+    const totalPriceElement = document.getElementById("total_price");
+
+    const cartTableBodyCheckout = document.getElementById("cart_list_checkout");
+    const totalPriceCheckout = document.getElementById("total_price_checkout");
+
+    if(!cartTableBody && !cartTableBodyCheckout) return;
+
+    if (cartTableBody) cartTableBody.innerHTML = "";
+    if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML = "";
+
+    if (cart.length === 0) {
+        const emptyRow = `
+        <tr>
+            <td colspan="5" class="text-center text-muted">Your cart is empty 🛒</td>
+        </tr>`;
+        if (cartTableBody) cartTableBody.innerHTML = emptyRow;
+        if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML = emptyRow;
+
+        if (totalPriceElement) totalPriceElement.textContent = "0";
+        if (totalPriceCheckout) totalPriceCheckout.textContent = "0";
+        return;
+    }
+
+    let total = 0;
+    for (let product of cart) {
+        const subtotal = product.price * product.quantity;
+        const subtotalWithDiscount = product.subtotalWithDiscount ?? subtotal;
+        total += subtotalWithDiscount;
+
+        const row = `
+            <tr>
+                <th scope="row">${product.name}</th>
+                <td>$${product.price.toFixed(2)}</td>
+                <td>
+                    <div class = "d-flex justify-content-center align-items-center">
+                        <button class="btn btn-primary" onclick="removeFromCart(${product.id})">-</button>
+                        ${product.quantity}
+                        <button class="btn btn-primary" onclick="buy(${product.id})">+</button>
+                    </div>
+                </td>
+                <td>$${subtotalWithDiscount.toFixed(2)}</td>
+            </tr>
+        `;
+
+        if (cartTableBody) cartTableBody.innerHTML += row;
+        if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML += row;
+    } 
+
+    const totalValue = total.toFixed(2);
+    if (totalPriceElement) totalPriceElement.textContent = totalValue;
+    if (totalPriceCheckout) totalPriceCheckout.textContent = totalValue;
 }
+
+const updateCartCount = () => {
+  const countElement = document.getElementById("count_product");
+  const totalQuantity = cart.reduce((sum, p) => sum + p.quantity, 0);
+  if (countElement) countElement.textContent = totalQuantity;
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+        try{
+            cart = JSON.parse(savedCart);
+            applyPromotionsCart();
+            updateCartCount();
+            printCart();
+        }catch(e){
+            console.error("Error parsing cart:", e);
+            cart = [];
+        }    
+    }
+    const addButtons = document.querySelectorAll(".add-to-cart");
+    addButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const id = parseInt(btn.dataset.productId);
+            buy(id);
+        });
+    });
+    const cleanBtn = document.getElementById("clean-cart");
+    if (cleanBtn) {
+        cleanBtn.addEventListener("click", () => cleanCart());
+    }
+});
 
 
 // ** Nivell II **
 
 // Exercise 7
 const removeFromCart = (id) => {
+    const productInCart = cart.find(p => p.id === id);
+    if (!productInCart) return; 
 
+    if (productInCart.quantity > 1) {
+        productInCart.quantity--;
+    } else {
+        const index = cart.findIndex(p => p.id === id);
+        if (index !== -1) {
+            cart.splice(index, 1);
+        }
+    }
+    applyPromotionsCart();
+    updateCartCount();
+    printCart();
+    saveCart();
 }
 
 const open_modal = () =>  {
+    applyPromotionsCart();
     printCart();
+    updateCartCount();
 }
+
+// Persist cart in localStorage
+window.addEventListener("beforeunload", () => {
+    saveCart();
+});
+
+window.open_modal = open_modal;
+window.buy = buy;
+window.removeFromCart = removeFromCart;
+window.cleanCart = cleanCart;
