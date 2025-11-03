@@ -282,7 +282,6 @@ body {
 }
 
 .product-card .card-img-top {
-  height: 220px;
   object-fit: cover;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 2rem;
@@ -427,6 +426,22 @@ body {
   font-size: 1.25rem;
 }
 
+.cart-summary-box .btn-primary{
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
+}
+
+.nav-link[href="./index.html#grocery"]:hover {
+  color: var(--hero-left) !important;
+}
+
+.nav-link[href="./index.html#beauty"]:hover {
+  color: var(--hero-center) !important;
+}
+
+.nav-link[href="./index.html#clothes"]:hover {
+  color: var(--hero-right) !important;
+}
+
 /* === FORM STYLES === */
 .form {
   background-color: var(--background-white);
@@ -442,18 +457,16 @@ body {
 }
 
 .form-control {
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
   padding: 0.75rem 1rem;
   font-size: 1rem;
-  transition: var(--transition);
   background-color: var(--background-light);
 }
 
 .form-control:focus {
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-  background-color: var(--background-white);
+  transition: none;
+  border-color: transparent;
+  box-shadow: none;
+  outline: none;
 }
 
 .form-control.is-invalid {
@@ -469,7 +482,7 @@ body {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-light)) !important;
+  background: linear-gradient(135deg, var(--primary-dark), var(--primary-color)) !important;
   border: none !important;
   color: white !important;
   font-weight: 600;
@@ -482,6 +495,8 @@ body {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
+  background: linear-gradient(135deg, var(--hero-left), var(--hero-center)) !important;
+
 }
 
 .btn-secondary {
@@ -564,7 +579,6 @@ body {
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   color: var(--text-dark);
   font-weight: 600;
-  text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 0.025em;
   padding: 1rem;
@@ -631,7 +645,7 @@ body {
 
 /* === SUCCESS MODAL === */
 #successModal .modal-header {
-  background: linear-gradient(135deg, var(--success-color), #059669) !important;
+  background: linear-gradient(135deg, var(--hero-left), var(--hero-right)) !important;
 }
 
 #successModal .modal-body {

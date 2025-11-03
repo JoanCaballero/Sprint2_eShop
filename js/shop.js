@@ -136,15 +136,25 @@ const applyPromotionsCart = () =>  {
 const printCart = () => {
     const cartTableBody = document.getElementById("cart_list");
     const totalPriceElement = document.getElementById("total_price");
-    if (!cartTableBody || !totalPriceElement) return;
-    cartTableBody.innerHTML = "";
+
+    const cartTableBodyCheckout = document.getElementById("cart_list_checkout");
+    const totalPriceCheckout = document.getElementById("total_price_checkout");
+
+    if(!cartTableBody && !cartTableBodyCheckout) return;
+
+    if (cartTableBody) cartTableBody.innerHTML = "";
+    if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML = "";
 
     if (cart.length === 0) {
-        cartTableBody.innerHTML = `
-            <tr>
-                <td colspan="5" class="text-center text-muted">Your cart is empty 🛒</td>
-            </tr>`;
-        totalPriceElement.textContent = "0";
+        const emptyRow = `
+        <tr>
+            <td colspan="5" class="text-center text-muted">Your cart is empty 🛒</td>
+        </tr>`;
+        if (cartTableBody) cartTableBody.innerHTML = emptyRow;
+        if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML = emptyRow;
+
+        if (totalPriceElement) totalPriceElement.textContent = "0";
+        if (totalPriceCheckout) totalPriceCheckout.textContent = "0";
         return;
     }
 
@@ -153,7 +163,8 @@ const printCart = () => {
         const subtotal = product.price * product.quantity;
         const subtotalWithDiscount = product.subtotalWithDiscount ?? subtotal;
         total += subtotalWithDiscount;
-        cartTableBody.innerHTML += `
+
+        const row = `
             <tr>
                 <th scope="row">${product.name}</th>
                 <td>$${product.price.toFixed(2)}</td>
@@ -167,8 +178,14 @@ const printCart = () => {
                 <td>$${subtotalWithDiscount.toFixed(2)}</td>
             </tr>
         `;
+
+        if (cartTableBody) cartTableBody.innerHTML += row;
+        if (cartTableBodyCheckout) cartTableBodyCheckout.innerHTML += row;
     } 
-    totalPriceElement.textContent = total.toFixed(2);
+
+    const totalValue = total.toFixed(2);
+    if (totalPriceElement) totalPriceElement.textContent = totalValue;
+    if (totalPriceCheckout) totalPriceCheckout.textContent = totalValue;
 }
 
 const updateCartCount = () => {
