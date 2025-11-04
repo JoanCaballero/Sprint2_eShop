@@ -71,8 +71,6 @@ const cartList = products.map(product => ({
 
 let cart = [];
 
-const total = 0;
-
 const saveCart = () => {
     localStorage.setItem("cart", JSON.stringify(cart));
 }

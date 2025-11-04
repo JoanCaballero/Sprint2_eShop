@@ -81,26 +81,22 @@
 								<div class="row g-3">
 									<div class="col-md-6">
 										<label for="fName" class="form-label">First Name:</label>
-										<input id="fName" class="form-control" type="text" placeholder="First name"
-											required minlength="3" />
+										<input id="fName" class="form-control" type="text" placeholder="First name" required minlength="3" />
 										<div id="errorName" class="invalid-feedback"></div>
 									</div>
 									<div class="col-md-6">
 										<label for="fLastN" class="form-label">Last name:</label>
-										<input id="fLastN" class="form-control" type="text" placeholder="Your last name"
-											required minlength="3" />
+										<input id="fLastN" class="form-control" type="text" placeholder="Your last name" required minlength="3" />
 										<div id="errorLastN" class="invalid-feedback"></div>
 									</div>
 									<div class="col-12">
 										<label for="fEmail" class="form-label">Email:</label>
-										<input id="fEmail" class="form-control" type="email"
-											placeholder="Email" minlength="3" required />
+										<input id="fEmail" class="form-control" type="email" placeholder="Email" minlength="3" required />
 										<div id="errorEmail" class="invalid-feedback"></div>
 									</div>
 									<div class="col-12">
 										<label for="fAddress" class="form-label">Address:</label>
-										<input id="fAddress" class="form-control" type="text"
-											placeholder="Address" required minlength="3" />
+										<input id="fAddress" class="form-control" type="text" placeholder="Address" required minlength="3" />
 										<div id="errorAddress" class="invalid-feedback"></div>
 									</div>
 									<div class="col-md-6">
@@ -110,14 +106,13 @@
 									</div>
 									<div class="col-md-6">
 										<label for="fPassword" class="form-label">Password:</label>
-										<input id="fPassword" class="form-control" title="(4-8 characters)" type="password"
-											placeholder="Password" required minlength="4" maxlength="8" />
+										<input id="fPassword" class="form-control" title="(4-8 characters)" type="password" placeholder="Password" required minlength="4" maxlength="8" />
 										<div id="errorPassword" class="invalid-feedback"></div>
 									</div>
 								</div>
 								<hr class="my-4">
 								<button type="submit" id="btn" class="w-100 btn btn-primary btn-lg">
-									Finalitzar Comanda
+									Submit
 								</button>
 							</form>
 						</div>
@@ -154,7 +149,7 @@
 	<!-- Footer-->
 	<footer class="py-3 bg-dark">
 		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your Website 2023</p>
+			<p class="m-0 text-center text-white">Copyright &copy; ShopNow <span id="current-year">2025</span></p>
 		</div>
 	</footer>
 
@@ -195,11 +190,13 @@
 	<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
-			<div class="modal-header bg-success text-white">
-				<h5 class="modal-title" id="successModalLabel">Order Complete!</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+				<div class="modal-header bg-success text-white">
+					<h5 class="modal-title" id="successModalLabel">Order Complete!</h5> <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<p id="successMessage">Your order has been placed successfully! <br>Thank you for your purchase. 🥳</p> 
+				</div>
 			</div>
-			<div class="modal-body">
-				<p id="successMessage">Your order has been placed successfully! <br>Thank you for your purchase. 🥳</p> </div>
 		</div>
 	</div>
 
@@ -210,8 +207,8 @@
 
 
 	<!-- Core theme JS-->
-	<script src="js/shop.js"></script>
-	<script src="js/checkout.js"></script>
+	<script src="js/shop.js"  type="module"></script>
+	<script src="js/checkout.js"  type="module"></script>
 </body>
 
 </html>
